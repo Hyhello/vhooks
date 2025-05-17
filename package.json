@@ -32,10 +32,6 @@
         "type": "git",
         "url": "git+https://github.com/Hyhello/vhooks.git"
     },
-    "publishConfig": {
-        "access": "public",
-        "registry": "https://registry.npmjs.org"
-    },
   "sideEffects": false,
   "lint-staged": {
     "src/**/*.{ts}": [
