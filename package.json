@@ -1,0 +1,83 @@
+{
+    "name": "vu-hooks",
+    "version": "0.0.1",
+    "description": "Bussiness hooks for vue2/3",
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.min.mjs",
+    "module": "./dist/index.min.mjs",
+    "unpkg": "./dist/index.min.mjs",
+    "type": "module",
+    "exports": {
+        ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.min.mjs",
+        "require": "./dist/index.min.mjs"
+        },
+        "./package.json": "./package.json"
+    },
+    "scripts": {
+        "prepare": "husky install",
+        "build": "tsup --config .scripts/build.ts",
+        "prepublishOnly": "npm run test && npm run build",
+        "lint": "tsc --noEmit && eslint --ext .ts src .scripts __tests__",
+        "test": "cross-env VUE_VERSION=2 jest && cross-env VUE_VERSION=3 jest"
+    },
+    "keywords": [],
+    "license": "MIT",
+    "homepage": "https://hyhello.github.io/vhooks/",
+    "bugs": {
+        "url": "https://github.com/Hyhello/vhooks/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hyhello/vhooks.git"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org"
+    },
+  "sideEffects": false,
+  "lint-staged": {
+    "src/**/*.{ts}": [
+      "eslint --fix"
+    ]
+  },
+  "files": [
+    "dist"
+  ],
+  "directories": {
+    "dist": "dist"
+  },
+  "dependencies": {
+    "mitt": "^3.0.1",
+    "vue-demi": "^0.14.10"
+  },
+  "devDependencies": {
+    "@hyhello/utils": "^2.1.0",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vue/cli-plugin-unit-jest": "^5.0.8",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/vue3-jest": "^27.0.0-alpha.3",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.24.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^7.0.4",
+    "jest": "^27.1.0",
+    "jest-environment-jsdom": "^27.1.0",
+    "jest-serializer-vue": "^3.1.0",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.2.5",
+    "ts-jest": "^27.0.4",
+    "tsup": "^8.3.5",
+    "typescript": "^4.5.5"
+  },
+  "peerDependencies": {
+    "mitt": "^3.0.1",
+    "vue-demi": "^0.14.10"
+  }
+}
