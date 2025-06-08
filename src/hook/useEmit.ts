@@ -25,8 +25,8 @@ let emitter: Emitter<Record<EventType, unknown>>;
  * @param option 事件总线对象
  * @returns emitter 对象
  * @example
- *  import { useEmitt } from 'vu-hooks';
- *  const emitter = useEmitt();
+ *  import { useEmit } from 'vu-hooks';
+ *  const emitter = useEmit();
  *
  *  // 触发事件
  *  emitter.emit('eventName', cvt);
@@ -35,15 +35,15 @@ let emitter: Emitter<Record<EventType, unknown>>;
  *  emitter.on('eventName', (cvt) => {});
  *
  *  // 监听事件，方式二
- *  useEmitt({
+ *  useEmit({
  *     name: 'eventName',
  *     callback: (cvt) => {
  *        // do something
  *     }
  *  });
  */
-export default function useEmitt<T extends MittEventType>(
-    option?: EmitterOption<T>
+export default function useEmit<T extends MittEventType>(
+    option?: EmitterOption<T> | Array<EmitterOption<T>>
 ): Emitter<Record<EventType, unknown>> {
     // fixed: tree-shaking
     if (!emitter) {
@@ -51,10 +51,20 @@ export default function useEmitt<T extends MittEventType>(
     }
 
     if (option) {
-        emitter.on(option.name, option.callback);
+        const options = Array.isArray(option) ? option : [option];
+
+        const disposeList: Array<EmitterOption<T>> = [];
+
+        // 监听事件
+        options.forEach((opt) => {
+            emitter.on(opt.name, opt.callback);
+            disposeList.push({ ...opt });
+        });
 
         tryDispose(() => {
-            emitter.off(option.name, option.callback);
+            disposeList.forEach((dispose) => {
+                emitter.off(dispose.name, dispose.callback);
+            });
         });
     }
 

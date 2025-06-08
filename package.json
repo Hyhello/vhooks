@@ -22,7 +22,13 @@
         "lint": "tsc --noEmit && eslint --ext .ts src .scripts __tests__",
         "test": "cross-env VUE_VERSION=2 jest && cross-env VUE_VERSION=3 jest"
     },
-    "keywords": [],
+    "keywords": [
+      "vue3",
+      "vue2",
+      "hooks",
+      "vu-hooks",
+      "vue-hooks"
+    ],
     "license": "MIT",
     "homepage": "https://hyhello.github.io/vhooks/",
     "bugs": {
