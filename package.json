@@ -1,6 +1,6 @@
 {
     "name": "vu-hooks",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Bussiness hooks for vue2/3",
     "types": "./dist/index.d.ts",
     "main": "./dist/index.min.mjs",
