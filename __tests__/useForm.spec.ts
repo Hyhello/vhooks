@@ -3,6 +3,7 @@
 import useForm from '@/hook/useForm';
 import { errorFmt } from '@/utils';
 import { mount } from '@vue/test-utils';
+import { ref, reactive } from 'vue-demi';
 
 interface TestComponentInstance {
     setup(): ReturnType<typeof useForm>;
@@ -59,10 +60,12 @@ describe('useForm', () => {
         expect(typeof wrapper.vm.form).toBe('object');
     });
 
-    it('Pass parameters without providing a configuration file, and the parameters should be a non-nested object', async () => {
+    it('Pass parameters without providing a configuration file, and the parameters should be a normal non-nested object', async () => {
         const wrapper = mount<TestComponentInstance>({
             setup() {
-                const { form, resetFields } = useForm({ a: 1 });
+                const initValue = { a: 1 };
+
+                const { form, resetFields } = useForm(initValue);
                 return {
                     form,
                     resetFields
@@ -84,10 +87,38 @@ describe('useForm', () => {
         expect(wrapper.vm.form.a).toBe(1);
     });
 
-    it('pass parameters without providing a configuration file, and the parameters should be a nested object', async () => {
+    it('Pass parameters without providing a configuration file, and the parameters should be a reactive non-nested object', async () => {
         const wrapper = mount<TestComponentInstance>({
             setup() {
-                const { form, resetFields } = useForm({ a: { b: 1 } });
+                const initValue = reactive({ a: 1 });
+
+                const { form, resetFields } = useForm(initValue);
+                return {
+                    form,
+                    resetFields
+                };
+            },
+            template: '<div></div>'
+        });
+
+        // 等待异步操作完成
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.vm.form.a).toBe(1);
+        expect(typeof wrapper.vm.resetFields).toBe('function');
+
+        wrapper.vm.form.a = 2;
+
+        wrapper.vm.resetFields();
+
+        expect(wrapper.vm.form.a).toBe(1);
+    });
+
+    it('pass parameters without providing a configuration file, and the parameters should be a ref nested object', async () => {
+        const wrapper = mount<TestComponentInstance>({
+            setup() {
+                const initValue = ref({ a: { b: 1 } });
+                const { form, resetFields } = useForm(initValue);
                 return {
                     form,
                     resetFields

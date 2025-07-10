@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Ref, ComputedRef } from 'vue-demi';
-import { ref, onMounted, computed } from 'vue-demi';
+import type { Ref, Raw, ComputedRef, MaybeRef } from 'vue-demi';
+import { ref, unref, toRaw, onMounted, computed } from 'vue-demi';
 import { Mode, createConfig, type GlobalConfigType } from '../global/config';
 
 import { errorFmt } from '@/utils';
@@ -64,13 +64,15 @@ interface UsePagingReturn<T extends Record<string, any>, U = unknown> {
  *  const { list, total, loading, fetchData, isPageShow, getRowIndex, handleReset, handleSearch, handleRefresh, handlePageChange, handleSizeChange } = usePaging(fetchMethod, fetchDefaults, options);
  */
 export default function usePaging<T extends Record<string, any>, U = unknown>(
-    fetchMethod: (params: T) => Promise<UsePagingResponseResultVO<U>>,
-    fetchDefaults?: T,
+    fetchMethod: (params: Raw<T>) => Promise<UsePagingResponseResultVO<U>>,
+    fetchDefaults?: MaybeRef<T>,
     options?: UsePagingOptionsType
 ): UsePagingReturn<T, U> {
     const loading = ref(false);
 
     const list: Ref<U[]> = ref([]);
+
+    const rawFetchDefaults = toRaw(unref(fetchDefaults || {}));
 
     // 全局配置
     const GLOBAL_CONFIG = createConfig();
@@ -97,7 +99,7 @@ export default function usePaging<T extends Record<string, any>, U = unknown>(
 
     // 初始化请求参数
     const fetchData = ref({
-        ...fetchDefaults,
+        ...rawFetchDefaults,
         ...DEFAULT_PAGES
     }) as Ref<T>;
 
@@ -139,7 +141,7 @@ export default function usePaging<T extends Record<string, any>, U = unknown>(
             fetchData.value[PropPageNo] = pageNo as T[keyof T];
 
             // 获取列表
-            const result = await fetchMethod(fetchData.value);
+            const result = await fetchMethod(toRaw(fetchData.value));
             if (result && Array.isArray(result.list) && PropTotal in result) {
                 list.value = IS_APPEND ? list.value.concat(result.list) : result.list;
                 const totalValue = result[PropTotal as string] || 0;
@@ -221,7 +223,7 @@ export default function usePaging<T extends Record<string, any>, U = unknown>(
      */
     function handleReset() {
         fetchData.value = {
-            ...fetchDefaults,
+            ...rawFetchDefaults,
             ...DEFAULT_PAGES
         } as T;
         handleSearch();

@@ -3,6 +3,7 @@
 // @ts-nocheck
 import usePaging from '@/hook/usePaging';
 import { mount, flushPromises } from '@vue/test-utils';
+import { ref, reactive } from 'vue-demi';
 
 import { errorFmt } from '@/utils';
 
@@ -200,11 +201,10 @@ describe('usePaging', () => {
     it('should be work has fetchData & options', async () => {
         const wrapper = mount({
             setup() {
+                const defaultFetchData = reactive({ type: 1 });
                 const { list, fetchData } = usePaging(
                     fetchMethod,
-                    {
-                        type: 1
-                    },
+                    defaultFetchData,
                     {
                         props: {
                             pageNo: 'pageNum',
@@ -240,11 +240,10 @@ describe('usePaging', () => {
     it('should be work with mode infinite', async () => {
         const wrapper = mount({
             setup() {
+                const defaultFetchData = ref({ type: 1 });
                 const { list, fetchData, getRowIndex, handleSearch, handleRefresh, handlePageChange } = usePaging(
                     fetchMethod,
-                    {
-                        type: 1
-                    },
+                    defaultFetchData,
                     {
                         mode: 'infinite'
                     }
@@ -321,11 +320,10 @@ describe('usePaging', () => {
     it('should be work with autoload false', async () => {
         const wrapper = mount({
             setup() {
+                const defaultFetchData = ref({ type: 1 });
                 const { list, fetchData, handleSearch, handleRefresh, handlePageChange } = usePaging(
                     fetchMethod,
-                    {
-                        type: 1
-                    },
+                    defaultFetchData,
                     {
                         autoload: false
                     }
@@ -362,9 +360,7 @@ describe('usePaging', () => {
     it('should be work by return other data', async () => {
         const wrapper = mount({
             setup() {
-                const { list, fetchData } = usePaging(fetchMethod1, {
-                    type: 1
-                });
+                const { list, fetchData } = usePaging(fetchMethod1, { type: 1 });
                 return {
                     list,
                     fetchData
@@ -389,11 +385,10 @@ describe('usePaging', () => {
     it('should be not work', async () => {
         const wrapper = mount({
             setup() {
+                const defaultFetchData = ref({ type: 1 });
                 const { list, fetchData } = usePaging(
                     fetchErrorMethod,
-                    {
-                        type: 1
-                    },
+                    defaultFetchData,
                     {
                         errorHandler
                     }
@@ -424,11 +419,10 @@ describe('usePaging', () => {
     it('should be not work other', async () => {
         const wrapper = mount({
             setup() {
+                const defaultFetchData = ref({ type: 1 });
                 const { list, fetchData } = usePaging(
                     fetchErrorMethod1,
-                    {
-                        type: 1
-                    },
+                    defaultFetchData,
                     {
                         errorHandler
                     }
