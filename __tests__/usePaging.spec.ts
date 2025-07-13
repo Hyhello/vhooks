@@ -137,8 +137,23 @@ describe('usePaging', () => {
         // @ts-ignore，第二页，每页10条，第2条数据，行号从0开始
         expect(wrapper.vm.getRowIndex(1)).toBe(2);
 
-        // handleSizeChange
+        // handleReset
         wrapper.vm.handleReset();
+
+        await flushPromises();
+
+        // 断言 fetchMethod 被调用
+        expect(fetchMethod).toBeCalledTimes(4);
+
+        // 断言请求参数
+        expect(wrapper.vm.fetchData).toEqual({ pageNo: 1, pageSize: 10 });
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore，第二页，每页10条，第2条数据，行号从0开始
+        expect(wrapper.vm.getRowIndex(1)).toBe(2);
+
+        // handleReset
+        wrapper.vm.handleReset(false);
 
         await flushPromises();
 

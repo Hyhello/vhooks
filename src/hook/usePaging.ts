@@ -161,7 +161,9 @@ export default function usePaging<T extends Record<string, any>, U = unknown>(
                     }
                 }
             } else {
-                throw new Error('Invalid response structure. Refer to UsePagingResponseResultVO for validation.');
+                throw new Error(
+                    `Invalid response from fetchMethod. Expected an object with 'list' array and '${PropTotal}' property.`
+                );
             }
         } catch (error) {
             errorHandler(error);
@@ -219,14 +221,17 @@ export default function usePaging<T extends Record<string, any>, U = unknown>(
     }
 
     /**
+     * @param reload { Boolean } 是否启用加载分页，default: true,
      * 重置分页数据到初始状态，并重新获取第一页的数据
      */
-    function handleReset() {
+    function handleReset(reload = true) {
         fetchData.value = {
             ...rawFetchDefaults,
             ...DEFAULT_PAGES
         } as T;
-        handleSearch();
+        if (reload) {
+            handleSearch();
+        }
     }
 
     // 组件挂载时，如果选项中设置了自动加载，则自动获取第一页的数据
