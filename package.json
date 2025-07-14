@@ -1,6 +1,6 @@
 {
     "name": "vu-hooks",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Bussiness hooks for vue2/3",
     "types": "./dist/index.d.ts",
     "main": "./dist/index.min.mjs",
@@ -9,9 +9,9 @@
     "type": "module",
     "exports": {
         ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.min.mjs",
-        "require": "./dist/index.min.mjs"
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.min.mjs",
+            "require": "./dist/index.min.mjs"
         },
         "./package.json": "./package.json"
     },

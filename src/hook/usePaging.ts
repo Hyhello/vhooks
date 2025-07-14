@@ -46,7 +46,7 @@ interface UsePagingReturn<T extends Record<string, any>, U = unknown> {
     fetchData: Ref<T>;
     isPageShow: ComputedRef<boolean>;
     getRowIndex: (rowNum: number) => number;
-    handleReset: () => void;
+    handleReset: (reload: boolean) => void;
     handleSearch: () => void;
     handleRefresh: (changeValue?: number) => void;
     handlePageChange: (pageNo: number) => Promise<void>;
